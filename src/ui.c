@@ -2,6 +2,16 @@
 
 #define STATS_SERVICE "status"
 
+zmsg_t *computation_message (const char *key) {
+    assert (key);
+    zmsg_t *cmp_msg = zmsg_new ();
+    if (!cmp_msg)
+        return NULL;
+    zmsg_addstr(cmp_msg, "GET");
+    zmsg_addstr(cmp_msg, key);
+    return cmp_msg;
+}
+
 int main (int argc, char **argv) {
     if (argc < 2) {
         zsys_error ("Usage: %s <address>", argv[0]);
@@ -17,26 +27,20 @@ int main (int argc, char **argv) {
         mlm_client_destroy (&agent);
         return EXIT_FAILURE;
     }
-    zmsg_t *getmsg = zmsg_new();
-    zmsg_addstr(getmsg, "GET");
-    zmsg_addstr(getmsg, "temperature");
+    zmsg_t *getmsg = computation_message ("temperature");
     // mlm_client_sendfor () returns zero on success
     if (mlm_client_sendfor (agent, STATS_SERVICE, "temperature", NULL, 0, &getmsg) !=0 ) {
         zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
     }
-    getmsg = zmsg_new();
-    zmsg_addstr(getmsg, "GET");
-    zmsg_addstr(getmsg, "ups.state");
+    getmsg = computation_message ("ups.state");
     if (mlm_client_sendfor (agent, STATS_SERVICE, "ups.state", NULL, 0, &getmsg) != 0) {
         zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
     }
-    getmsg = zmsg_new();
-    zmsg_addstr(getmsg, "GET");
-    zmsg_addstr(getmsg, "ups.power");
+    getmsg = computation_message ("ups.power");
     if (mlm_client_sendfor (agent, STATS_SERVICE, "ups.power", NULL, 0, &getmsg) != 0) {
         zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
@@ -62,6 +66,9 @@ int main (int argc, char **argv) {
                 i++;
                 free (key); free (result);
             }
+        }
+        else {
+            zsys_info ("Got a message from %s", mlm_client_command (agent));
         }
         zmsg_destroy (&msg);
     }
