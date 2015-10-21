@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
 
     mlm = mlm_client_new();
     mlm_client_connect ( mlm, ENDPOINT, 5000, NAME );
-    mlm_client_set_producer ( mlm, "METRICS" );
+    mlm_client_set_producer ( mlm, STREAM );
     while( !zsys_interrupted ) {
         snprintf(message, 100, "%s/TEMPERATURE/%i", NAME, random() % 16 + 10 );
         snprintf(topic, 100, "temperature.%s", NAME );
