@@ -12,6 +12,9 @@ Devices sends multipart string with following strings:
 
 Topic is `what.name`
 
+Device MUST send a message at regular intervals (at leastevery 10 second),
+otherwise it is considered exploded.
+
 Parts
 -----
 
