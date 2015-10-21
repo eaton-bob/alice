@@ -1,6 +1,5 @@
 #include <malamute.h>
 
-<<<<<<< HEAD
 int main (int argc, char **argv) {
     if (argc < 2) {
         zsys_error ("Usage: %s <address>", argv[0]);
