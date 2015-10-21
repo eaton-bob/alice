@@ -10,9 +10,25 @@
 
 #define STREAM   "METRIC"
 
-int main(int argc, char** argv) {    
+static void
+s_pub_metric(mlm_client_t * mlm, const char *key, const char * dev_name)
+{
+    char topic[100], value[100];
+
+    snprintf (topic, 100, "%s.%s", key, dev_name );
+
+    zmsg_t *msg = zmsg_new ();
+    zmsg_addstr (msg, dev_name);
+    zmsg_addstr (msg, key);
+    snprintf (value, 100, "%li", random() % 16 + 10 );
+    zmsg_addstr (msg, value);
+
+    mlm_client_send (mlm, topic, &msg);
+    printf ("sending %s/%s/%s\n", dev_name, key, value);
+}
+
+int main(int argc, char** argv) {
     mlm_client_t *mlm;
-    char topic[100], message[100];
 
     if( argc != 3 ) {
         printf("usage: endpoint name\n");
@@ -26,15 +42,9 @@ int main(int argc, char** argv) {
     mlm_client_connect ( mlm, ENDPOINT, 5000, NAME );
     mlm_client_set_producer ( mlm, STREAM );
     while( !zsys_interrupted ) {
-        snprintf(message, 100, "%s/TEMPERATURE/%li", NAME, random() % 16 + 10 );
-        snprintf(topic, 100, "temperature.%s", NAME );
-        mlm_client_sendx( mlm, topic, message, NULL); 
-        printf("sending %s\n", message);
-        
-        snprintf(message, 100, "%s/HUMIDITY/%li", NAME, random() % 30 + 50 );
-        snprintf(topic, 100, "humidity.%s", NAME );
-        mlm_client_sendx( mlm, topic, message, NULL); 
-        printf("sending %s\n", message);
+
+        s_pub_metric (mlm, "TEMPERATURE", NAME);
+        s_pub_metric (mlm, "HUMIDITY", NAME);
 
         zclock_sleep(5000);
     }
