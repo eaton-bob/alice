@@ -32,7 +32,7 @@ int main()
     getmsg = zmsg_new();
     zmsg_addstr(getmsg, "GET");
     zmsg_addstr(getmsg, "ups.power");
-    if (mlm_client_sendforx (agent, "stats", "ups.power", NULL, 0, &getmsg) )
+    if (mlm_client_sendfor (agent, "stats", "ups.power", NULL, 0, &getmsg) )
     {
         zsys_info("Cannot send the message");
         mlm_client_destroy (&agent);
@@ -49,11 +49,11 @@ int main()
             continue;
         if ( streq (mlm_client_command (agent), "MAILBOX DELIVER") )
         {
-            char *key = zmsg_popstr (msg);
-            if ( ( strcmp(key, "temperature") == 0 ) ||
-                 ( strcmp(key, "ups.power") == 0 ) ||
-                 ( strcmp(key, "ups.temperature") == 0 ) )
+            if ( ( strcmp(mlm_client_subject(agent), "temperature") == 0 ) ||
+                 ( strcmp(mlm_client_subject(agent), "ups.power") == 0 ) ||
+                 ( strcmp(mlm_client_subject(agent), "ups.temperature") == 0 ) )
             {
+                char *key = zmsg_popstr (msg);
                 char *result = zmsg_popstr (msg);
                 zsys_info ("GOT: %s = %s", key , result);
                 i++;

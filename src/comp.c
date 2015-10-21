@@ -20,13 +20,17 @@ s_compute_average (zlistx_t *list) {
 
 int main() {
 
-    //static const char* ENDPOINT = "tcp://192.168.199.104:9999";
-    static const char* ENDPOINT = "ipc://@/malamute";
+    if(argc != 2) {
+        fprintf(stderr, "Usage: %s address\n", argv[0]);
+        exit(1);
+    }
+
+    char *addr = argv[1];
 
     mlm_client_t *client = mlm_client_new ();
     assert (client);
 
-    int r = mlm_client_connect (client, ENDPOINT, 5000, __FILE__);
+    int r = mlm_client_connect (client, addr, 5000, __FILE__);
     assert (r != -1);
 
     r = mlm_client_set_worker (client, "STATS", "TEMPERATURE.*");
