@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
 
     mlm_client_t *client = mlm_client_new();
     mlm_client_connect(client, addr, 5000, name);
-    mlm_client_set_producer(client, "METRICS");
+    mlm_client_set_producer(client, "METRIC");
 
     bool state = random()%2;
     int timeout = 0;
