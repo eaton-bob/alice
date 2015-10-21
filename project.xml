@@ -4,6 +4,7 @@
     script = "zproject.gsl"
     >
     <include filename = "license.xml" />
+    <version major = "0" minor = "0" patch = "0" />
     <use project = "malamute" />
 
     <main name = "ups" />
