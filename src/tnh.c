@@ -11,7 +11,7 @@
 #define STREAM   "METRIC"
 
 static void
-s_pub_metric(mlm_client_t * mlm, const char *key, const char * dev_name)
+s_pub_metric(mlm_client_t * mlm, const char *key, const char *dev_name)
 {
     char topic[100], value[100];
 
