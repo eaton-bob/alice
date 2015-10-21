@@ -1,10 +1,5 @@
 # alice
 
-ups.c - sends UPS status to METRICS stream
-tnh.c - sends temperature and heat to METRICS stream
-comp.c - computes current system status from METRICS stream
-ui.c - requests system status from whomever has it
-
 ## RFC1 - HARDWARE protocol
 The HARDWARE peer produces metric data and publishes them on "METRICS" stream with topic "<key>.<name>".
 
@@ -27,4 +22,12 @@ The protocol consists of the following messages:
 * key/value - The COMPUTATION peer returns the requested computed value for metric key.
 
 Where "key" is a unique name for HARDWARE metric, "value" is a string representation of the value and "/" indicates a multipart message.
+
+## Parts:
+
+* ups.c - sends UPS status to METRICS strea
+* tnh.c - sends temperature and heat to METRICS stream
+* comp.c - computes current system status from METRICS stream
+* ui.c - requests system status from whomever has it
+
 
