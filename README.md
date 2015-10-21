@@ -6,7 +6,7 @@ comp.c - computes current system status from METRICS stream
 ui.c - requests system status from whomever has it
 
 ## RFC1 - HARDWARE protocol
-The HARDWARE peer produces metric data and publishes them on "METRICS" stream.
+The HARDWARE peer produces metric data and publishes them on "METRICS" stream with topic "<key>.<name>".
 
 The protocol consists of the following message:
 * name/key/value - The HARDWARE peer 'name' produced a metric 'key' with value 'value'.
