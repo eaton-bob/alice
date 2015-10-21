@@ -1,8 +1,6 @@
 alice
 =====
 
-# alice
-
 RFC1 - HARDWARE protocol
 ------------------------
 The HARDWARE peer produces metric data and publishes them on "METRICS" stream with topic "<key>.<name>".
