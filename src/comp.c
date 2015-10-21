@@ -78,7 +78,7 @@ int main(int argc, char **argv) {
             char *topic = zmsg_popstr (msg);
             zlistx_t* list = NULL;
             zmsg_t *reply = zmsg_new ();
-            if(list = (zlistx_t*)zhash_lookup(hash, topic)) {
+            if(list == (zlistx_t*)zhash_lookup(hash, topic)) {
                 char *result = s_compute_average (list);
                 zmsg_addstr (reply, result);
                 mlm_client_sendto (
