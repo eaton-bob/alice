@@ -5,29 +5,28 @@ int main()
     const char *endpoint = "ipc://@/malamute";
 
     mlm_client_t *agent = mlm_client_new ();
-    if ( mlm_client_connect (agent, endpoint, 1000, "UI") )
-    {
-        zsys_info("Cannot connect to the endpoint %s", endpoint);
+    // mlm_client_connect () returns -1 on failure
+    if (mlm_client_connect (agent, endpoint, 1000, "UI") == -1) {
+        zsys_error ("mlm_client_connect (endpoint = '%s') failed.", endpoint);
         mlm_client_destroy (&agent);
-        return 1;
+        return EXIT_FAILURE;
     }
+
     zmsg_t *msg = zmsg_new();
-    if (mlm_client_sendfor (agent, "stats", "temperature", NULL, 0, &msg) )
-    {
-        zsys_info("Cannot send the message");
+    // mlm_client_sendfor () returns zero on success
+    if (mlm_client_sendfor (agent, "stats", "temperature", NULL, 0, &msg) != 0) {
+        zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
     }
     msg = zmsg_new();
-    if (mlm_client_sendfor (agent, "stats", "ups.state", NULL, 0, &msg) )
-    {
-        zsys_info("Cannot send the message");
+    if (mlm_client_sendfor (agent, "stats", "ups.state", NULL, 0, &msg) != 0) {
+        zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
     }
     msg = zmsg_new();
-    if (mlm_client_sendforx (agent, "stats", "ups.power", NULL, 0, &msg) )
-    {
+    if (mlm_client_sendforx (agent, "stats", "ups.power", NULL, 0, &msg) !=0) {
         zsys_info("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
