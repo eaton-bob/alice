@@ -1,0 +1,13 @@
+<project 
+    name = "alice"
+    description = "Simulation of monitoring over Malamute"
+    script = "zproject.gsl"
+    >
+    <include filename = "license.xml" />
+    <use project = "malamute" />
+
+    <main name = "ups" />
+    <main name = "tnh" />
+    <main name = "comp" />
+    <main name = "ui" />
+</project>
