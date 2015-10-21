@@ -20,9 +20,9 @@ Specific protocols are detailed in RFC blocks below.
 Parts
 -----
 
-* ups.c - sends UPS status to METRICS stream
-* tnh.c - sends temperature and heat to METRICS stream
-* comp.c - computes current system status from METRICS stream
+* ups.c - Implements HARDWARE protocol. Produces UPS metric data to METRICS stream.
+* tnh.c - Implements. HARDWARE protocol. Produces temperature, humidity metric data to METRICS stream
+* comp.c - Implements COMPUTATION protocol. Offers 'status' service which computes current system status from METRICS stream.
 * ui.c - requests system status from STATS services
 
 RFC1 - HARDWARE protocol
