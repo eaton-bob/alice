@@ -5,6 +5,8 @@ config/
 configure
 config.log
 config.status
+confdefs.h
+conftest.*
 aclocal.m4
 autom4te.cache/
 libtool
