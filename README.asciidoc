@@ -41,10 +41,10 @@ Parts
 * tnh.c - Implements. DEVICES protocol.
   Produces temperature, humidity metric data to METRICS stream
 * comp.c - Implements COMPUTATION protocol.
-** Offers 'status' service which computes current system status from METRICS
+** Offers 'STATS' service which computes current system status from METRICS
    stream.
 ** Offers 'average' service that computes total average value from METRICS
    stream. 
-* ui.c - requests system status from 'status' services
+* ui.c - requests system status from 'STATS' services
 
 
