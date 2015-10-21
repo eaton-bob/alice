@@ -339,7 +339,10 @@ AC_ARG_WITH([pkgconfigdir], AS_HELP_STRING([--with-pkgconfigdir=PATH],
 AC_SUBST([pkgconfigdir])
 
 # Specify output files
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile
+                 doc/Makefile
+                 src/libalice.pc
+                 ])
 AC_OUTPUT
 
 ################################################################################

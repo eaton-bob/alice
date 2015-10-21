@@ -12,5 +12,5 @@
     <main name = "tnh" />
     <main name = "comp" />
     <main name = "ui" />
-    <class name = "alice_class">Do we need at least one class?</class>    
+    <class name = "alice_class">Do we need at least one class?</class>  
 </project>

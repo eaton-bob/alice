@@ -198,9 +198,42 @@
   <References />
   <Files>
     <Filter Name="Source Files" Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+      <File RelativePath="..\..\..\..\src\alice_class.c">
+        <FileConfiguration Name="Release|Win32">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="Release|x64">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="Debug|Win32">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="Debug|x64">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="DebugDLL|Win32">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="DebugDLL|x64">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="ReleaseDLL|Win32">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="ReleaseDLL|x64">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="RelWithDebInfo|Win32">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="RelWithDebInfo|x64">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+      </File>
     </Filter>
     <Filter Name="Header Files">
       <File RelativePath="..\..\..\..\builds\msvc\platform.h" />
+      <File RelativePath="..\..\..\..\include\alice_class.h" />
       <File RelativePath="..\..\..\..\include\alice_library.h" />
       <File RelativePath="..\..\..\..\include\alice.h" />
     </Filter>
