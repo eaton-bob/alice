@@ -2,12 +2,17 @@
 
 int main()
 {
-    const char *endpoint = "ipc://@/malamute";
+    if(argc != 2) {
+        fprintf(stderr, "Usage: %s address\n", argv[0]);
+        exit(1);
+    }
+
+    char *addr = argv[1];
 
     mlm_client_t *agent = mlm_client_new ();
     // mlm_client_connect () returns -1 on failure
-    if (mlm_client_connect (agent, endpoint, 1000, "UI") == -1) {
-        zsys_error ("mlm_client_connect (endpoint = '%s') failed.", endpoint);
+    if ( mlm_client_connect (agent, addr, 1000, "UI") == -1 ) {
+        zsys_error ("Cannot connect to the endpoint %s", addr);
         mlm_client_destroy (&agent);
         return EXIT_FAILURE;
     }
