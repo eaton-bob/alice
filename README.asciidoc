@@ -4,6 +4,9 @@ alice
 Protocol overview
 -----------------
 
+DEVICES
+~~~~~~~
+
 Devices sends multipart string with following strings:
 
 * name of the device
@@ -17,20 +20,9 @@ otherwise it is considered exploded.
 
 Specific protocols are detailed in RFC blocks below.
 
-Parts
------
+HARDWARE
+~~~~~~~~
 
-* ups.c - Implements HARDWARE protocol.
-  Produces UPS metric data to METRICS stream.
-* tnh.c - Implements. HARDWARE protocol.
-  Produces temperature, humidity metric data to METRICS stream
-* comp.c - Implements COMPUTATION protocol.
-  Offers 'status' service which computes current system status from METRICS stream.
-  Offers 'average' service that computes total average value from METRICS stream. 
-* ui.c - requests system status from STATS services
-
-RFC1 - HARDWARE protocol
-========================
 The HARDWARE peer produces metric data and publishes them on "METRICS" stream
 with topic "<key>.<name>".
 
@@ -48,8 +40,9 @@ Furthermore the HARDWARE peer MUST send a state message at regular intervals
 uses the key = 'state' and values = [ "ON" | "OFF" ].
 
 
-RFC2 - COMPUTATION protocol
-========================
+COMPUTATION
+~~~~~~~~~~~
+
 The COMPUTATION peer offers a named service to any USER peers who request it.
 
 The protocol consists of the following messages:
@@ -59,3 +52,19 @@ The protocol consists of the following messages:
 
 Where "key" is a unique name for HARDWARE metric, "value" is a string
 representation of the value and "/" indicates a multipart message.
+
+Parts
+-----
+
+* ups.c - Implements DEVICES protocol.
+  Produces UPS metric data to METRICS stream.
+* tnh.c - Implements. DEVICES protocol.
+  Produces temperature, humidity metric data to METRICS stream
+* comp.c - Implements COMPUTATION protocol.
+** Offers 'status' service which computes current system status from METRICS
+   stream.
+** Offers 'average' service that computes total average value from METRICS
+   stream. 
+* ui.c - requests system status from STATS services
+
+
