@@ -12,6 +12,10 @@ fi
 (which gsl >/dev/null 2>&1) && \
 	gsl project.xml
 
+[ -d "/usr/lib/ccache" ] && \
+    PATH="/usr/lib/ccache:$PATH" && \
+    export PATH
+
 ./autogen.sh && \
 ./configure && \
 echo "=== MAKING PAR" && \
