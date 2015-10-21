@@ -45,6 +45,6 @@ Parts
    stream.
 ** Offers 'average' service that computes total average value from METRICS
    stream. 
-* ui.c - requests system status from STATS services
+* ui.c - requests system status from 'status' services
 
 
