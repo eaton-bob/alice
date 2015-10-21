@@ -1,5 +1,36 @@
-# This one will be generated with zProject
+# This one will be generated with zProject and autotools
 Makefile
+Makefile.in
+config/
+configure
+config.log
+config.status
+aclocal.m4
+autom4te.cache/
+libtool
 
-nbproject
+# TXT are generated base to generate other docs - see @header, @interface etc.
+doc/*.txt
+doc/*.?
+doc/*.xml
+doc/*.doc
+
+src/*.o
+src/*.la
+src/*.lo
+src/*.pc
+src/*.pc.in
+src/.deps/
+src/.libs/
+src/*stamp*
+src/platform.h*
+
+nbproject/
+
+# Built binaries
+src/comp
+src/stats
+src/tnh
+src/ui
+src/ups
 
