@@ -1,8 +1,8 @@
 #include <malamute.h>
 
 int main (int argc, char **argv) {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: %s address\n", argv[0]);
+    if (argc < 2) {
+        zsys_error ("Usage: %s <address>", argv[0]);
         exit(1);
     }
 
@@ -51,14 +51,14 @@ int main (int argc, char **argv) {
             continue;
         if ( streq (mlm_client_command (agent), "MAILBOX DELIVER") )
         {
-            if ( ( strcmp(mlm_client_subject(agent), "temperature") == 0 ) ||
-                 ( strcmp(mlm_client_subject(agent), "ups.power") == 0 ) ||
-                 ( strcmp(mlm_client_subject(agent), "ups.temperature") == 0 ) )
-            {
+            if (streq (mlm_client_subject(agent), "temperature") ||
+                streq (mlm_client_subject(agent), "ups.power") ||
+                streq (mlm_client_subject(agent), "ups.temperature")) {
                 char *key = zmsg_popstr (msg);
                 char *result = zmsg_popstr (msg);
                 zsys_info ("GOT: %s = %s", key , result);
                 i++;
+                free (key); free (result);
             }
         }
         zmsg_destroy (&msg);
