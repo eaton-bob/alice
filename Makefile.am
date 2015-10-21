@@ -21,6 +21,8 @@ project_libs = \
 
 SUBDIRS =
 DIST_SUBDIRS =
+SUBDIRS += doc
+DIST_SUBDIRS += doc
 
 lib_LTLIBRARIES =
 bin_PROGRAMS =

@@ -109,6 +109,7 @@ ENDIF (MALAMUTE_FOUND)
 set (alice_headers
     include/alice_library.h
     include/alice.h
+    include/alice_class.h
 )
 source_group ("Header Files" FILES ${alice_headers})
 install(FILES ${alice_headers} DESTINATION include)
@@ -118,6 +119,7 @@ install(FILES ${alice_headers} DESTINATION include)
 ########################################################################
 include_directories("${BINARY_DIR}" "${SOURCE_DIR}/include")
 set (alice_sources
+    src/alice_class.c
 )
 source_group ("Source Files" FILES ${alice_sources})
 if (NOT DEFINED BUILD_SHARED_LIBS)
