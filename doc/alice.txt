@@ -1,0 +1,25 @@
+Name(7)
+=======
+
+
+NAME
+----
+alice - Simulation of monitoring over Malamute
+
+
+SYNOPSIS
+--------
+----
+#include <alice.h>
+
+cc ['flags'] 'files' -lalice ['libraries']
+----
+
+
+DESCRIPTION
+-----------
+
+Classes
+~~~~~~~
+
+Something.

@@ -15,7 +15,6 @@ and "/" indicates a multipart message.
 
 Furthermore the HARDWARE peer MUST send a state message at regular intervals (every 10 second), otherwise it is considered exploded. The state message uses the key = 'state' and values = [ "ON" | "OFF" ].
 
-
 RFC2 - COMPUTATION protocol
 ---------------------------
 The COMPUTATION peer offers a named service to any USER peers who request it.
