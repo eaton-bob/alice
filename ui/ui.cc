@@ -32,7 +32,7 @@ int main()
     getmsg = zmsg_new();
     zmsg_addstr(getmsg, "GET");
     zmsg_addstr(getmsg, "ups.power");
-    if (mlm_client_sendforx (agent, "stats", "ups.power", NULL, 0, &getmsg) )
+    if (mlm_client_sendfor (agent, "stats", "ups.power", NULL, 0, &getmsg) )
     {
         zsys_info("Cannot send the message");
         mlm_client_destroy (&agent);
