@@ -36,11 +36,11 @@ int main(int argc, char** argv) {
         }
         sprintf(topic,"power.%s", name);
         sprintf(value,"%d", power);
-        mlm_client_sendx(client, topic, value, NULL);
+        mlm_client_sendx(client, topic, name, "power", value, NULL);
         printf("%s = %s\n", topic, value);
         sprintf(topic,"state.%s", name);
         sprintf(value,"%d", state);
-        mlm_client_sendx(client, topic, value, NULL);
+        mlm_client_sendx(client, topic, name, "state", value, NULL);
         printf("%s = %s\n", topic, value);
         sleep(1);
     }
