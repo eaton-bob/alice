@@ -50,9 +50,13 @@ int main() {
             goto msg_destroy;
         else
         if (streq (mlm_client_command (client), "STREAM DELIVER")) {
-            char *number = zmsg_popstr (msg);
-            zlistx_add_end (list, number);
-            zstr_free (&number);
+            char *name = zmsg_popstr (msg);
+            char *type = zmsg_popstr (msg);
+            char *value = zmsg_popstr (msg);
+            zlistx_add_end (list, value);
+            zstr_destroy (&name);
+            zstr_destroy (&type);
+            zstr_free (&value);
             goto msg_destroy;
         }
         else
