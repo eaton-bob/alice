@@ -76,9 +76,10 @@ int main(int argc, char **argv) {
         else
         if (streq (mlm_client_command (client), "SERVICE DELIVER")) {
             char *topic = zmsg_popstr (msg);
+            char *key   = zmsg_popstr (msg);
             zlistx_t* list = NULL;
             zmsg_t *reply = zmsg_new ();
-            if((list = (zlistx_t*)zhash_lookup(hash, topic)) != NULL) {
+            if((list = (zlistx_t*)zhash_lookup(hash, key)) != NULL) {
                 char *result = s_compute_average (list);
                 zmsg_addstr (reply, result);
                 mlm_client_sendto (
