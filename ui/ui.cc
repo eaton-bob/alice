@@ -11,22 +11,28 @@ int main()
         mlm_client_destroy (&agent);
         return 1;
     }
-    zmsg_t *msg = zmsg_new();
-    if (mlm_client_sendfor (agent, "stats", "temperature", NULL, 0, &msg) )
+    zmsg_t *getmsg = zmsg_new();
+    zmsg_addstr(getmsg, "GET");
+    zmsg_addstr(getmsg, "temperature");
+    if (mlm_client_sendfor (agent, "stats", "temperature", NULL, 0, &getmsg) )
     {
         zsys_info("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
     }
-    msg = zmsg_new();
-    if (mlm_client_sendfor (agent, "stats", "ups.state", NULL, 0, &msg) )
+    getmsg = zmsg_new();
+    zmsg_addstr(getmsg, "GET");
+    zmsg_addstr(getmsg, "ups.state");
+    if (mlm_client_sendfor (agent, "stats", "ups.state", NULL, 0, &getmsg) )
     {
         zsys_info("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
     }
-    msg = zmsg_new();
-    if (mlm_client_sendforx (agent, "stats", "ups.power", NULL, 0, &msg) )
+    getmsg = zmsg_new();
+    zmsg_addstr(getmsg, "GET");
+    zmsg_addstr(getmsg, "ups.power");
+    if (mlm_client_sendforx (agent, "stats", "ups.power", NULL, 0, &getmsg) )
     {
         zsys_info("Cannot send the message");
         mlm_client_destroy (&agent);
@@ -43,12 +49,17 @@ int main()
             continue;
         if ( streq (mlm_client_command (agent), "MAILBOX DELIVER") )
         {
-            char *result  = zmsg_popstr (msg);
-            zsys_info ("GOT: %s = %s", mlm_client_subject (agent) , result);
-            i++;
+            char *key = zmsg_popstr (msg);
+            if ( ( strcmp(key, "temperature") == 0 ) ||
+                 ( strcmp(key, "ups.power") == 0 ) ||
+                 ( strcmp(key, "ups.temperature") == 0 ) )
+            {
+                char *result = zmsg_popstr (msg);
+                zsys_info ("GOT: %s = %s", key , result);
+                i++;
+            }
         }
-        else
-            continue;
+        zmsg_destroy (&msg);
     }
     mlm_client_destroy (&agent);
     return 0;
