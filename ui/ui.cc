@@ -11,23 +11,28 @@ int main()
         mlm_client_destroy (&agent);
         return EXIT_FAILURE;
     }
-
-    zmsg_t *msg = zmsg_new();
+    zmsg_t *getmsg = zmsg_new();
+    zmsg_addstr(getmsg, "GET");
+    zmsg_addstr(getmsg, "temperature");
     // mlm_client_sendfor () returns zero on success
-    if (mlm_client_sendfor (agent, "stats", "temperature", NULL, 0, &msg) != 0) {
+    if (mlm_client_sendfor (agent, "stats", "temperature", NULL, 0, &getmsg) !=0 ) {
         zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
     }
-    msg = zmsg_new();
-    if (mlm_client_sendfor (agent, "stats", "ups.state", NULL, 0, &msg) != 0) {
+    getmsg = zmsg_new();
+    zmsg_addstr(getmsg, "GET");
+    zmsg_addstr(getmsg, "ups.state");
+    if (mlm_client_sendfor (agent, "stats", "ups.state", NULL, 0, &getmsg) != 0) {
         zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
     }
-    msg = zmsg_new();
-    if (mlm_client_sendforx (agent, "stats", "ups.power", NULL, 0, &msg) !=0) {
-        zsys_info("Cannot send the message");
+    getmsg = zmsg_new();
+    zmsg_addstr(getmsg, "GET");
+    zmsg_addstr(getmsg, "ups.power");
+    if (mlm_client_sendfor (agent, "stats", "ups.power", NULL, 0, &getmsg) != 0) {
+        zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
     }
@@ -42,12 +47,17 @@ int main()
             continue;
         if ( streq (mlm_client_command (agent), "MAILBOX DELIVER") )
         {
-            char *result  = zmsg_popstr (msg);
-            zsys_info ("GOT: %s = %s", mlm_client_subject (agent) , result);
-            i++;
+            if ( ( strcmp(mlm_client_subject(agent), "temperature") == 0 ) ||
+                 ( strcmp(mlm_client_subject(agent), "ups.power") == 0 ) ||
+                 ( strcmp(mlm_client_subject(agent), "ups.temperature") == 0 ) )
+            {
+                char *key = zmsg_popstr (msg);
+                char *result = zmsg_popstr (msg);
+                zsys_info ("GOT: %s = %s", key , result);
+                i++;
+            }
         }
-        else
-            continue;
+        zmsg_destroy (&msg);
     }
     mlm_client_destroy (&agent);
     return 0;
