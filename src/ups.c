@@ -36,11 +36,19 @@ int main(int argc, char** argv) {
         }
         sprintf(topic,"power.%s", name);
         sprintf(value,"%d", power);
-        mlm_client_sendx(client, topic, name, "power", value, NULL);
+        zmsg_t *pubmsg = zmsg_new ();
+        zmsg_addstr(pubmsg, name);
+        zmsg_addstr(pubmsg, "power");
+        zmsg_addstr(pubmsg, value);
+        mlm_client_send(client, topic, &pubmsg);
         printf("%s = %s\n", topic, value);
         sprintf(topic,"state.%s", name);
         sprintf(value,"%d", state);
-        mlm_client_sendx(client, topic, name, "state", value, NULL);
+        pubmsg = zmsg_new ();
+        zmsg_addstr(pubmsg, name);
+        zmsg_addstr(pubmsg, "power");
+        zmsg_addstr(pubmsg, value);
+        mlm_client_send(client, topic, &pubmsg);
         printf("%s = %s\n", topic, value);
         sleep(1);
     }
