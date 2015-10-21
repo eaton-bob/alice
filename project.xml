@@ -2,6 +2,7 @@
     name = "alice"
     description = "Simulation of monitoring over Malamute"
     script = "zproject.gsl"
+    email = "alice@mallory.org"
     >
     <include filename = "license.xml" />
     <version major = "0" minor = "0" patch = "0" />

@@ -3,7 +3,19 @@
 
 static char*
 s_compute_average (zlistx_t *list) {
-    return "1";
+
+    int sum = 0;
+
+    void *it;
+    for (it = zlistx_first (list); it != NULL; it = zlistx_next (list)) {
+        sum += atoi ((char*) it);
+    }
+
+    double avg = sum / zlistx_size (list);
+
+    char *ret;
+    asprintf (&ret, "%f", avg);
+    return ret;
 }
 
 int main() {
