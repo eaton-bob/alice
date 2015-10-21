@@ -48,8 +48,9 @@ int main(int argc, char **argv) {
 
         zmsg_t *msg = mlm_client_recv (client);
 
-        if (streq (mlm_client_command (client), "MALIBOX DELIVER"))
-            goto msg_destroy;
+        if (streq (mlm_client_command (client), "MALIBOX DELIVER")) {
+            ;   //  Do nothing
+        }
         else
         if (streq (mlm_client_command (client), "STREAM DELIVER")) {
             char *name = zmsg_popstr (msg);
@@ -71,7 +72,6 @@ int main(int argc, char **argv) {
             zstr_free (&name);
             zstr_free (&type);
             zstr_free (&value);
-            goto msg_destroy;
         }
         else
         if (streq (mlm_client_command (client), "SERVICE DELIVER")) {
@@ -89,7 +89,8 @@ int main(int argc, char **argv) {
                     5000,
                     &reply);
                 zstr_free (&result);
-            } else {
+            } 
+            else {
                 zmsg_addstr (reply, "404");
                 mlm_client_sendto (
                     client,
@@ -101,11 +102,7 @@ int main(int argc, char **argv) {
             }
             zstr_free (&topic);
         }
-
-msg_destroy:
         zmsg_destroy (&msg);
     }
-
     mlm_client_destroy (&client);
-
 }
