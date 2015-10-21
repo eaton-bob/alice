@@ -1,5 +1,7 @@
 #include <malamute.h>
 
+#define STATS_SERVICE "status"
+
 int main (int argc, char **argv) {
     if (argc < 2) {
         zsys_error ("Usage: %s <address>", argv[0]);
@@ -19,7 +21,7 @@ int main (int argc, char **argv) {
     zmsg_addstr(getmsg, "GET");
     zmsg_addstr(getmsg, "temperature");
     // mlm_client_sendfor () returns zero on success
-    if (mlm_client_sendfor (agent, "stats", "temperature", NULL, 0, &getmsg) !=0 ) {
+    if (mlm_client_sendfor (agent, STATS_SERVICE, "temperature", NULL, 0, &getmsg) !=0 ) {
         zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
@@ -27,7 +29,7 @@ int main (int argc, char **argv) {
     getmsg = zmsg_new();
     zmsg_addstr(getmsg, "GET");
     zmsg_addstr(getmsg, "ups.state");
-    if (mlm_client_sendfor (agent, "stats", "ups.state", NULL, 0, &getmsg) != 0) {
+    if (mlm_client_sendfor (agent, STATS_SERVICE, "ups.state", NULL, 0, &getmsg) != 0) {
         zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
@@ -35,7 +37,7 @@ int main (int argc, char **argv) {
     getmsg = zmsg_new();
     zmsg_addstr(getmsg, "GET");
     zmsg_addstr(getmsg, "ups.power");
-    if (mlm_client_sendfor (agent, "stats", "ups.power", NULL, 0, &getmsg) != 0) {
+    if (mlm_client_sendfor (agent, STATS_SERVICE, "ups.power", NULL, 0, &getmsg) != 0) {
         zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
