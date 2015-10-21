@@ -1,6 +1,6 @@
 #include <malamute.h>
 
-int main()
+int main(int argc, char **argv)
 {
     if(argc != 2) {
         fprintf(stderr, "Usage: %s address\n", argv[0]);
