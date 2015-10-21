@@ -38,13 +38,11 @@ int main() {
 
     r = mlm_client_set_consumer (client, "METRIC", "TEMPERATURE.*");
     assert (r != -1);
+    r = mlm_client_set_consumer (client, "METRIC", "power.*");
+    assert (r != -1);
 
-    zlistx_t *list = zlistx_new();
-    assert (list);
-    // Use item handlers
-    zlistx_set_destructor (list, (czmq_destructor *) zstr_free);
-    zlistx_set_duplicator (list, (czmq_duplicator *) strdup);
-    zlistx_set_comparator (list, (czmq_comparator *) strcmp);
+    zhash_t *hash = zhash_new();
+    assert (hash);
 
     while (!zsys_interrupted) {
 
@@ -57,32 +55,57 @@ int main() {
             char *name = zmsg_popstr (msg);
             char *type = zmsg_popstr (msg);
             char *value = zmsg_popstr (msg);
+            char topic[512];
+            printf("Got value %s for %s from %s\n", value, type, name);
+            sprintf(topic, "%s.%s", type, name);
+            zlistx_t* list = NULL;
+            if((list = (zlistx_t*)zhash_lookup(hash, topic))== NULL) {
+                list = zlistx_new();
+                // Use item handlers
+                zlistx_set_destructor (list, (czmq_destructor *) zstr_free);
+                zlistx_set_duplicator (list, (czmq_duplicator *) strdup);
+                zlistx_set_comparator (list, (czmq_comparator *) strcmp);
+                zhash_insert(hash, topic, (void*)list);
+            }
             zlistx_add_end (list, value);
-            zstr_destroy (&name);
-            zstr_destroy (&type);
+            zstr_free (&name);
+            zstr_free (&type);
             zstr_free (&value);
             goto msg_destroy;
         }
         else
         if (streq (mlm_client_command (client), "SERVICE DELIVER")) {
-            char *result = s_compute_average (list);
+            char *topic = zmsg_popstr (msg);
+            zlistx_t* list = NULL;
             zmsg_t *reply = zmsg_new ();
-            zmsg_addstr (reply, result);
-            mlm_client_sendto (
-                client,
-                mlm_client_sender (client),
-                "TEMPERATURE.AVERAGE",
-                NULL,
-                5000,
-                &reply);
-            zstr_free (&result);
+            if(list = (zlistx_t*)zhash_lookup(hash, topic)) {
+                char *result = s_compute_average (list);
+                zmsg_addstr (reply, result);
+                mlm_client_sendto (
+                    client,
+                    mlm_client_sender (client),
+                    topic,
+                    NULL,
+                    5000,
+                    &reply);
+                zstr_free (&result);
+            } else {
+                zmsg_addstr (reply, "404");
+                mlm_client_sendto (
+                    client,
+                    mlm_client_sender (client),
+                    topic,
+                    NULL,
+                    5000,
+                    &reply);
+            }
+            zstr_free (&topic);
         }
 
 msg_destroy:
         zmsg_destroy (&msg);
     }
 
-    zlistx_destroy (&list);
     mlm_client_destroy (&client);
 
 }

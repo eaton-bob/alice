@@ -10,36 +10,34 @@ int main()
     char *addr = argv[1];
 
     mlm_client_t *agent = mlm_client_new ();
-    if ( mlm_client_connect (agent, addr, 1000, "UI") )
-    {
-        zsys_info("Cannot connect to the endpoint %s", addr);
+    // mlm_client_connect () returns -1 on failure
+    if ( mlm_client_connect (agent, addr, 1000, "UI") == -1 ) {
+        zsys_error ("Cannot connect to the endpoint %s", addr);
         mlm_client_destroy (&agent);
-        return 1;
+        return EXIT_FAILURE;
     }
     zmsg_t *getmsg = zmsg_new();
     zmsg_addstr(getmsg, "GET");
     zmsg_addstr(getmsg, "temperature");
-    if (mlm_client_sendfor (agent, "stats", "temperature", NULL, 0, &getmsg) )
-    {
-        zsys_info("Cannot send the message");
+    // mlm_client_sendfor () returns zero on success
+    if (mlm_client_sendfor (agent, "stats", "temperature", NULL, 0, &getmsg) !=0 ) {
+        zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
     }
     getmsg = zmsg_new();
     zmsg_addstr(getmsg, "GET");
     zmsg_addstr(getmsg, "ups.state");
-    if (mlm_client_sendfor (agent, "stats", "ups.state", NULL, 0, &getmsg) )
-    {
-        zsys_info("Cannot send the message");
+    if (mlm_client_sendfor (agent, "stats", "ups.state", NULL, 0, &getmsg) != 0) {
+        zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
     }
     getmsg = zmsg_new();
     zmsg_addstr(getmsg, "GET");
     zmsg_addstr(getmsg, "ups.power");
-    if (mlm_client_sendfor (agent, "stats", "ups.power", NULL, 0, &getmsg) )
-    {
-        zsys_info("Cannot send the message");
+    if (mlm_client_sendfor (agent, "stats", "ups.power", NULL, 0, &getmsg) != 0) {
+        zsys_error ("Cannot send the message");
         mlm_client_destroy (&agent);
         return 1;
     }
