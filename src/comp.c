@@ -52,6 +52,7 @@ int main() {
             char *type = zmsg_popstr (msg);
             char *value = zmsg_popstr (msg);
             char topic[512];
+            printf("Got value %s for %s from %s\n", value, type, name);
             sprintf(topic, "%s.%s", type, name);
             zlistx_t* list = NULL;
             if((list = (zlistx_t*)zhash_lookup(hash, topic))== NULL) {
